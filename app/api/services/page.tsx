@@ -12,7 +12,7 @@ const Services: NextPage = () => {
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/services', {
+            const response = await fetch(' http://localhost:5000/api/services', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -29,6 +29,7 @@ const Services: NextPage = () => {
                 setErrorMessage('Failed to save the service.');
             }
         } catch (error) {
+            console.log(error)
             setErrorMessage('Error occurred while saving the service.');
         }
     };

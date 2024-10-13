@@ -12,7 +12,7 @@ const FAQ: NextPage = () => {
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/faq', {
+            const response = await fetch('http://localhost:5000/api/faqs/post', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

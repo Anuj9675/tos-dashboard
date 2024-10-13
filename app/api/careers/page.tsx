@@ -12,7 +12,7 @@ const Careers: NextPage = () => {
     const [experience, setExperience] = useState<string>('');
     const [salary, setSalary] = useState<string>('');
     const [jobLocation, setJobLocation] = useState<string>('');
-    const [hiringInsights, setHiringInsights] = useState<string>('');
+
 
     const [successMessage, setSuccessMessage] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -20,7 +20,7 @@ const Careers: NextPage = () => {
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/careers', {
+            const response = await fetch('http://localhost:5000/api/careers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const Careers: NextPage = () => {
                     experience,
                     salary,
                     jobLocation,
-                    hiringInsights
+                
                 }),
             });
 
@@ -47,13 +47,14 @@ const Careers: NextPage = () => {
                 setExperience('');
                 setSalary('');
                 setJobLocation('');
-                setHiringInsights('');
+            
                 setSuccessMessage('Career saved successfully.');
                 setErrorMessage('');
             } else {
                 setErrorMessage('Failed to save the career.');
             }
         } catch (error) {
+            console.log(error)
             setErrorMessage('Error occurred while saving the career.');
         }
     };
@@ -153,16 +154,7 @@ const Careers: NextPage = () => {
                             />
                         </div>
 
-                        <div>
-                            <label className="block text-lg font-medium">Hiring Insights</label>
-                            <textarea
-                                className="w-full p-2 border rounded"
-                                rows={6}
-                                placeholder="Enter hiring insights (e.g., Hiring 3 candidates)"
-                                value={hiringInsights}
-                                onChange={(e) => setHiringInsights(e.target.value)}
-                            />
-                        </div>
+                 
 
                         <button
                             type="submit"
