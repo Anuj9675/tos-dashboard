@@ -3,3 +3,27 @@
 @tailwind utilities;
 
 
+@layer utilities {
+    .bg-light{
+      background-color: #e6e7ff;
+    }
+    .bg-dark{
+      background-color: #02077d;
+    }
+    .text-light{
+      color: #8286fd;
+    }
+  /* text-dark */
+    .text-dark{
+      color: #0309af;
+    }
+    .bg-medium-light{
+      background-color: #5056fc;
+    }
+    .bg-medium{
+      background-color: #1e26fb;
+    }
+    .border-medium{
+      border-color: #1e26fb;
+    }
+  }

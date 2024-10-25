@@ -1,64 +1,65 @@
 'use client'
-import { Header, Sidebar } from '@/components';
+
 import { NextPage } from 'next';
 import { useState } from 'react';
 
-const FAQ: NextPage = () => {
-    const [question, setQuestion] = useState<string>('');
-    const [answer, setAnswer] = useState<string>('');
+const Services: NextPage = () => {
+    const [serviceTitle, setServiceTitle] = useState<string>('');
+    const [serviceDescription, setServiceDescription] = useState<string>('');
     const [successMessage, setSuccessMessage] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/faqs/post', {
+            const response = await fetch(' http://localhost:5000/api/services', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ question, answer }),
+                body: JSON.stringify({ serviceTitle, serviceDescription }),
             });
 
             if (response.ok) {
-                setQuestion('');
-                setAnswer('');
-                setSuccessMessage('FAQ saved successfully.');
+                setServiceTitle('');
+                setServiceDescription('');
+                setSuccessMessage('Service saved successfully.');
                 setErrorMessage('');
             } else {
-                setErrorMessage('Failed to save the FAQ.');
+                setErrorMessage('Failed to save the service.');
             }
         } catch (error) {
-            setErrorMessage('Error occurred while saving the FAQ.');
+            console.log(error)
+            setErrorMessage('Error occurred while saving the service.');
         }
     };
 
     return (
         <div className="flex min-h-screen">
-            <Sidebar />
+        
             <div className="flex-1 bg-gray-100">
-                <Header title="Edit FAQ Page" />
+              
                 <div className="p-6">
                     <form onSubmit={handleSave} className="space-y-6">
                         <div>
-                            <label className="block text-lg font-medium">Question</label>
+                            <label className="block text-lg font-medium">Service Title</label>
                             <input
                                 type="text"
                                 className="w-full p-2 border rounded"
-                                placeholder="Enter question"
-                                value={question}
-                                onChange={(e) => setQuestion(e.target.value)}
+                                placeholder="Enter service title"
+                                value={serviceTitle}
+                                onChange={(e) => setServiceTitle(e.target.value)}
                             />
                         </div>
 
                         <div>
-                            <label className="block text-lg font-medium">Answer</label>
+                            <label className="block text-lg font-medium">Service Description</label>
                             <textarea
                                 className="w-full p-2 border rounded"
                                 rows={6}
-                                placeholder="Enter answer"
-                                value={answer}
-                                onChange={(e) => setAnswer(e.target.value)}
+                                placeholder="Enter service description"
+                                value={serviceDescription}
+                                onChange={(e) => setServiceDescription(e.target.value)}
                             />
                         </div>
 
@@ -78,4 +79,4 @@ const FAQ: NextPage = () => {
     );
 }
 
-export default FAQ;
+export default Services;
