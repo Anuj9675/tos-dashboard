@@ -1,3 +1,7 @@
 export * from './sidebar/sidebar'
 export * from './faq/faq'
 export * from './careers/career'
+export * from './contact/contact'
+export * from './jobcategory/jobcategory'
+export * from './services/services'
+export * from './about/about'

@@ -9,6 +9,8 @@ import {
   FaQuestionCircle,
   FaChevronRight,
 } from "react-icons/fa";
+import { MdMessage } from "react-icons/md";
+import { TbCategoryFilled } from "react-icons/tb";
 
 interface SidebarProps {
   toggleSidebar: (open: boolean) => void;
@@ -17,8 +19,10 @@ interface SidebarProps {
 const navData = [
   { href: "/about", icon: FaInfoCircle, label: "About" },
   { href: "/careers", icon: FaBriefcase, label: "Careers" },
-  { href: "/services", icon: FaServicestack, label: "Services" },
+  { href: "/service", icon: FaServicestack, label: "Services" },
   { href: "/faq", icon: FaQuestionCircle, label: "FAQ" },
+  { href: "/contact", icon: MdMessage , label: "Message" },
+  { href: "/jobcategories", icon: TbCategoryFilled , label: "Job Category" },
 ];
 
 export const Sidebar: FC<SidebarProps> = ({ toggleSidebar }) => {

@@ -1,11 +1,9 @@
-//types/faq.ts
+
 export interface FAQItem {
     id: number;
     question: string;
     answer: string;
 }
-
-// types/CareerItem.ts
 
 export interface CareerItem {
     jobTitle: string;
@@ -18,5 +16,31 @@ export interface CareerItem {
     jobLocation: string;
   }
   
+
+export interface Message {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+  }
+
+  export interface JobCategoryItem {
+    id: number;
+    jobCategory: string;
+  }
   
+  export interface ServiceItem {
+    id: number;
+    Title: string;
+    Description: string;
+    Image: string; // Storing image as base64 string
+}
+
+
+export interface AboutItem {
+    title: string;
+    description: string;
+    image: string; 
+}
+
   
