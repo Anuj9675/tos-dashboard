@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { FaTimes } from 'react-icons/fa'; // Import the close icon
+
 
 // Validation schema using Yup
 const schema = yup.object().shape({
