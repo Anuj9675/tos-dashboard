@@ -1,17 +1,16 @@
 'use client';
-import { useForm, Controller, useFieldArray } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useState } from 'react';
 import { CareerItem } from '@/types'; // Import the CareerItem type
-import { FaPlus, FaTrash } from 'react-icons/fa'; // Import icons for Add and Delete
 
 // Define the validation schema using Yup
 const schema = yup.object().shape({
   jobTitle: yup.string().required('Job title is required'),
   jobDescription: yup.string().required('Job description is required'),
-  responsibilities: yup.array().of(yup.string().required('Responsibility is required')),
-  skillsAndQualifications: yup.array().of(yup.string().required('Skill is required')),
+  responsibilities: yup.string().required('Responsibilities are required'), // Change to string
+  skillsAndQualifications: yup.string().required('Skills are required'), // Change to string
   employmentType: yup.string().required('Employment type is required'),
   experience: yup.string().required('Experience is required'),
   salary: yup.string().required('Salary is required'),
@@ -30,29 +29,18 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
 
   // Initialize the form using react-hook-form
   const { control, handleSubmit, formState: { errors }, reset } = useForm<CareerItem>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
     defaultValues: {
       jobTitle: '',
       jobDescription: '',
-      responsibilities: [],
-      skillsAndQualifications: [],
+      responsibilities: '', // Initialize as string
+      skillsAndQualifications: '', // Initialize as string
       employmentType: '',
       experience: '',
       salary: '',
       jobLocation: '',
       jobCategory: '', 
     },
-  });
-
-  // Use useFieldArray for responsibilities and skills
-  const { fields: responsibilitiesFields, append: appendResponsibility, remove: removeResponsibility } = useFieldArray({
-    control,
-    name: 'responsibilities',
-  });
-
-  const { fields: skillsFields, append: appendSkill, remove: removeSkill } = useFieldArray({
-    control,
-    name: 'skillsAndQualifications',
   });
 
   const onSubmit = async (data: CareerItem) => {
@@ -137,77 +125,39 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
             {errors.jobDescription && <p className="text-red-500 text-xs mt-1">{errors.jobDescription.message}</p>}
           </div>
 
-          
-
           {/* Responsibilities */}
           <div>
-            <label className="block text-xs font-medium mb-1">Responsibilities</label>
-            {responsibilitiesFields.map((item, index) => (
-              <div key={item.id} className="flex items-center space-x-2 mb-1">
-                <Controller
-                  name={`responsibilities.${index}`}
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="text"
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 transition duration-150 text-xs"
-                      placeholder="Enter responsibility"
-                    />
-                  )}
+            <label className="block text-xs font-medium mb-1">Responsibilities (comma-separated)</label>
+            <Controller
+              name="responsibilities"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 transition duration-150 text-xs"
+                  placeholder="Enter responsibilities"
                 />
-                <button
-                  type="button"
-                  onClick={() => removeResponsibility(index)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() => appendResponsibility('')}
-              className="text-blue-600 hover:text-blue-700 mt-2 flex items-center"
-            >
-              <FaPlus className="mr-1" />
-            </button>
+              )}
+            />
             {errors.responsibilities && <p className="text-red-500 text-xs mt-1">{errors.responsibilities.message}</p>}
           </div>
 
           {/* Skills and Qualifications */}
           <div>
-            <label className="block text-xs font-medium mb-1">Skills and Qualifications</label>
-            {skillsFields.map((item, index) => (
-              <div key={item.id} className="flex items-center space-x-2 mb-1">
-                <Controller
-                  name={`skillsAndQualifications.${index}`}
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="text"
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 transition duration-150 text-xs"
-                      placeholder="Enter skill or qualification"
-                    />
-                  )}
+            <label className="block text-xs font-medium mb-1">Skills and Qualifications (comma-separated)</label>
+            <Controller
+              name="skillsAndQualifications"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 transition duration-150 text-xs"
+                  placeholder="Enter skills and qualifications"
                 />
-                <button
-                  type="button"
-                  onClick={() => removeSkill(index)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() => appendSkill('')}
-              className="text-blue-600 hover:text-blue-700 mt-2 flex items-center"
-            >
-              <FaPlus className="mr-1" />
-            </button>
+              )}
+            />
             {errors.skillsAndQualifications && <p className="text-red-500 text-xs mt-1">{errors.skillsAndQualifications.message}</p>}
           </div>
 
@@ -287,19 +237,17 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
             </div>
           </div>
 
-          {/* Submit Button */}
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white text-xs py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 transition duration-150"
-            >
-              Save Career
-            </button>
-          </div>
-
           {/* Success and Error Messages */}
-          {successMessage && <p className="text-green-500 text-sm mt-2">{successMessage}</p>}
-          {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
+          {successMessage && <p className="text-green-500 text-xs mt-2">{successMessage}</p>}
+          {errorMessage && <p className="text-red-500 text-xs mt-2">{errorMessage}</p>}
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-150"
+          >
+            Save Career
+          </button>
         </form>
       </div>
     </div>

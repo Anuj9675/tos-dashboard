@@ -9,8 +9,8 @@ export interface CareerItem {
     jobTitle: string;
     jobDescription: string;
     jobCategory: string;
-    responsibilities?: string[] | undefined; 
-    skillsAndQualifications?: string[] | undefined; 
+    responsibilities?: string; 
+    skillsAndQualifications?: string; 
     employmentType: string;
     experience: string;
     salary: string;
