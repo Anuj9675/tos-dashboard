@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { FaTimes } from 'react-icons/fa'; 
+import { ServiceItem } from '@/types';
 
 // Validation schema using Yup
 const schema = yup.object().shape({
@@ -22,15 +23,23 @@ interface ServiceFormInputs {
 interface ServiceFormProps {
     onSave: (newService: { id: number; title: string; description: string; image: string }) => void;
     onClose: () => void;
+    onDelete: () => void; // Accept delete function
+    initialData?: ServiceItem | null; // Accept initial data for editing
 }
 
-const ServiceForm = ({ onSave, onClose }: ServiceFormProps) => {
+const ServiceForm = ({ onSave, onClose, onDelete, initialData }: ServiceFormProps) => {
     const { control, handleSubmit, formState: { errors }, reset } = useForm<ServiceFormInputs>({
         resolver: yupResolver(schema),
     });
 
+    useEffect(() => {
+        if (initialData) {
+            reset(initialData); // Reset form with initial data
+        }
+    }, [initialData, reset]);
+
     const onSubmit = (data: ServiceFormInputs) => {
-        const newService = { id: Date.now(), ...data };
+        const newService = { id: initialData ? initialData.id : Date.now(), ...data }; // Use existing ID or create a new one
         onSave(newService);
         reset(); 
     };
@@ -39,7 +48,7 @@ const ServiceForm = ({ onSave, onClose }: ServiceFormProps) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white p-6 rounded shadow-lg w-96 relative">
                 <button onClick={onClose} className="absolute top-0 right-3 text-3xl text-gray-500 hover:text-gray-700">
-                    &times;
+                    <FaTimes />
                 </button>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <div>
@@ -93,9 +102,15 @@ const ServiceForm = ({ onSave, onClose }: ServiceFormProps) => {
                         {errors.image && <p className="text-red-500">{errors.image.message}</p>}
                     </div>
 
-                    <button type="submit" className="bg-blue-600 text-white px-4 py-2 text-xs font-medium rounded hover:bg-blue-700">
+                    <button type="submit" className="bg-blue-600 mr-2 text-white px-4 py-2 text-xs font-medium rounded hover:bg-blue-700">
                         Save Service
                     </button>
+                    
+                    {initialData && ( // Show delete button only if editing
+                        <button type="button" onClick={onDelete} className="bg-red-600  text-white px-4 py-2 text-xs font-medium rounded hover:bg-red-700">
+                            Delete Service
+                        </button>
+                    )}
                 </form>
             </div>
         </div>

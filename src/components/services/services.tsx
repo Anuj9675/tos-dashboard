@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import ServiceForm from './serviceform';
 
-
 interface ServiceItem {
     id: number;
     title: string;
@@ -15,14 +14,34 @@ interface ServiceItem {
 export const Services = () => {
     const [services, setServices] = useState<ServiceItem[]>([]);
     const [showForm, setShowForm] = useState(false);
+    const [currentService, setCurrentService] = useState<ServiceItem | null>(null); // Track the current service
 
     const handleAddClick = () => {
+        setCurrentService(null); // Clear current service for new entry
+        setShowForm(true);
+    };
+
+    const handleRowClick = (service: ServiceItem) => {
+        setCurrentService(service); // Set current service for editing
         setShowForm(true);
     };
 
     const handleSave = (newService: ServiceItem) => {
-        setServices((prev) => [...prev, newService]);
-        setShowForm(false); 
+        setServices((prev) => {
+            if (currentService) {
+                // Update existing service
+                return prev.map(service => (service.id === currentService.id ? newService : service));
+            } else {
+                // Add new service
+                return [...prev, newService];
+            }
+        });
+        setShowForm(false);
+    };
+
+    const handleDelete = (id: number) => {
+        setServices(services.filter(service => service.id !== id));
+        setShowForm(false); // Close the form after deletion
     };
 
     const handleCloseForm = () => {
@@ -53,7 +72,7 @@ export const Services = () => {
                 <tbody>
                     {services.length > 0 ? (
                         services.map((service, index) => (
-                            <tr key={service.id}>
+                            <tr key={service.id} onClick={() => handleRowClick(service)} className="cursor-pointer hover:bg-gray-100">
                                 <td className="py-2 px-4 border border-gray-300 text-left">{index + 1}</td>
                                 <td className="py-2 px-4 border border-gray-300 text-left">
                                     <img src={service.image} alt={service.title} className="w-16 h-16 object-cover" />
@@ -72,7 +91,12 @@ export const Services = () => {
 
             {showForm && (
                 <div className="mt-6 relative">
-                    <ServiceForm onSave={handleSave} onClose={handleCloseForm} />
+                    <ServiceForm 
+                        onSave={handleSave} 
+                        onClose={handleCloseForm} 
+                        onDelete={() => currentService && handleDelete(currentService.id)} // Pass delete function
+                        initialData={currentService} 
+                    />
                 </div>
             )}
         </div>

@@ -16,6 +16,7 @@ const schema = yup.object().shape({
   experience: yup.string().required('Experience is required'),
   salary: yup.string().required('Salary is required'),
   jobLocation: yup.string().required('Job location is required'),
+  jobCategory: yup.string().required('Job category is required'), // Add jobCategory to schema
 });
 
 interface CareersFormProps {
@@ -34,23 +35,24 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
       jobTitle: '',
       jobDescription: '',
       responsibilities: [],
-      skillsAndQualifications: [], 
-      employmentType: '', 
+      skillsAndQualifications: [],
+      employmentType: '',
       experience: '',
       salary: '',
       jobLocation: '',
+      jobCategory: '', // Add jobCategory to default values
     },
   });
 
   // Use useFieldArray for responsibilities and skills
   const { fields: responsibilitiesFields, append: appendResponsibility, remove: removeResponsibility } = useFieldArray({
     control,
-    name: 'responsibilities', // Ensure this matches the field in the form data
+    name: 'responsibilities',
   });
 
   const { fields: skillsFields, append: appendSkill, remove: removeSkill } = useFieldArray({
     control,
-    name: 'skillsAndQualifications', // Ensure this matches the field in the form data
+    name: 'skillsAndQualifications',
   });
 
   const onSubmit = async (data: CareerItem) => {
@@ -72,7 +74,7 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
           onClick={onClose}
           className="absolute top-3 right-3 text-3xl text-gray-500 hover:text-gray-700"
         >
-          &times; {/* Close button using × character */}
+          &times;
         </button>
         <h2 className="text-lg font-bold mb-4">Add Career</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -94,6 +96,29 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
             {errors.jobTitle && <p className="text-red-500 text-xs mt-1">{errors.jobTitle.message}</p>}
           </div>
 
+          {/* Job Category */}
+          <div>
+            <label className="block text-xs font-medium mb-1">Job Category</label>
+            <Controller
+              name="jobCategory"
+              control={control}
+              render={({ field }) => (
+                <select
+                  {...field}
+                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 transition duration-150 text-xs"
+                >
+                  <option value="">Select job category</option>
+                  <option value="Engineering">Engineering</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Sales">Sales</option>
+                  <option value="Human Resources">Human Resources</option>
+                  <option value="Finance">Finance</option>
+                </select>
+              )}
+            />
+            {errors.jobCategory && <p className="text-red-500 text-xs mt-1">{errors.jobCategory.message}</p>}
+          </div>
+
           {/* Job Description */}
           <div>
             <label className="block text-xs font-medium mb-1">Job Description</label>
@@ -111,6 +136,8 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
             />
             {errors.jobDescription && <p className="text-red-500 text-xs mt-1">{errors.jobDescription.message}</p>}
           </div>
+
+          
 
           {/* Responsibilities */}
           <div>
@@ -202,7 +229,6 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
               />
               {errors.experience && <p className="text-red-500 text-xs mt-1">{errors.experience.message}</p>}
             </div>
-
             <div className="flex-1">
               <label className="block text-xs font-medium mb-1">Employment Type</label>
               <Controller
@@ -214,10 +240,10 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
                     className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 transition duration-150 text-xs"
                   >
                     <option value="">Select employment type</option>
-                    <option value="full-time">Full-time</option>
-                    <option value="part-time">Part-time</option>
-                    <option value="contract">Contract</option>
-                    <option value="internship">Internship</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
                   </select>
                 )}
               />
@@ -237,13 +263,12 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
                     {...field}
                     type="text"
                     className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 transition duration-150 text-xs"
-                    placeholder="Enter salary range"
+                    placeholder="e.g., $50k-$70k"
                   />
                 )}
               />
               {errors.salary && <p className="text-red-500 text-xs mt-1">{errors.salary.message}</p>}
             </div>
-
             <div className="flex-1">
               <label className="block text-xs font-medium mb-1">Job Location</label>
               <Controller
@@ -262,19 +287,19 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
             </div>
           </div>
 
-          {/* Submit button */}
-          <div className="text-right">
+          {/* Submit Button */}
+          <div className="flex justify-end">
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md shadow-sm transition duration-150 text-sm"
+              className="bg-blue-600 text-white text-xs py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 transition duration-150"
             >
               Save Career
             </button>
           </div>
 
           {/* Success and Error Messages */}
-          {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
-          {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
+          {successMessage && <p className="text-green-500 text-sm mt-2">{successMessage}</p>}
+          {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
         </form>
       </div>
     </div>

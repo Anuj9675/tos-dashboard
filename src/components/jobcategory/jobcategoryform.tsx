@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -15,11 +15,13 @@ interface JobCategoryFormInputs {
 }
 
 interface JobCategoryFormProps {
-    onSave: (newJobCategory: { id: number; jobCategory: string }) => void; // Add onSave prop type
+    onSave: (newJobCategory: { id: number; jobCategory: string }) => void;
     onClose: () => void; // Add onClose prop type
+    onDelete: (id: number) => void; // Add onDelete prop type
+    initialData?: { id: number; jobCategory: string } | null; // Accept initial data for editing
 }
 
-const JobCategoryForm = ({ onSave, onClose }: JobCategoryFormProps) => {
+const JobCategoryForm = ({ onSave, onClose, onDelete, initialData }: JobCategoryFormProps) => {
     const [successMessage, setSuccessMessage] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -28,12 +30,25 @@ const JobCategoryForm = ({ onSave, onClose }: JobCategoryFormProps) => {
         resolver: yupResolver(schema),
     });
 
+    useEffect(() => {
+        if (initialData) {
+            reset(initialData); // Reset form with initial data for editing
+        }
+    }, [initialData, reset]);
+
     const onSubmit = (data: JobCategoryFormInputs) => {
-        const newJobCategory = { id: Date.now(), ...data }; // Use Date.now() as a unique ID
+        const newJobCategory = { id: initialData ? initialData.id : Date.now(), ...data }; // Use existing ID or create a new one
         onSave(newJobCategory); // Call onSave with the new Job Category
         reset(); // Reset the form after successful submission
         setSuccessMessage('Job Category saved successfully.');
         setErrorMessage('');
+    };
+
+    const handleDelete = () => {
+        if (initialData) {
+            onDelete(initialData.id); // Call onDelete with the current ID
+            onClose(); // Close the form after deletion
+        }
     };
 
     return (
@@ -65,10 +80,20 @@ const JobCategoryForm = ({ onSave, onClose }: JobCategoryFormProps) => {
 
                     <button
                         type="submit"
-                        className="bg-blue-600 text-white px-4 py-2 text-xs font-medium rounded hover:bg-blue-700"
+                        className="bg-blue-600 text-white mr-2 px-4 py-2 text-xs font-medium rounded hover:bg-blue-700"
                     >
-                        Save Changes
+                        Save
                     </button>
+                    
+                    {initialData && (
+                        <button
+                            type="button"
+                            onClick={handleDelete}
+                            className="bg-red-600 text-white px-4 py-2 text-xs font-medium rounded hover:bg-red-700"
+                        >
+                            Delete
+                        </button>
+                    )}
                 </form>
 
                 {successMessage && <p className="text-green-500 mt-4">{successMessage}</p>}

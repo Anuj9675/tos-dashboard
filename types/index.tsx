@@ -8,6 +8,7 @@ export interface FAQItem {
 export interface CareerItem {
     jobTitle: string;
     jobDescription: string;
+    jobCategory: string;
     responsibilities?: string[] | undefined; 
     skillsAndQualifications?: string[] | undefined; 
     employmentType: string;
@@ -31,16 +32,17 @@ export interface Message {
   
   export interface ServiceItem {
     id: number;
-    Title: string;
-    Description: string;
-    Image: string; // Storing image as base64 string
+    title: string;
+    description: string;
+    image?: string; 
 }
 
 
 export interface AboutItem {
-    title: string;
-    description: string;
-    image: string; 
+  title: string;
+  description: string;
+  image: string; 
 }
+
 
   

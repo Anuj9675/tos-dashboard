@@ -17,12 +17,12 @@ interface SidebarProps {
 }
 
 const navData = [
-  { href: "/about", icon: FaInfoCircle, label: "About" },
-  { href: "/careers", icon: FaBriefcase, label: "Careers" },
-  { href: "/service", icon: FaServicestack, label: "Services" },
-  { href: "/faq", icon: FaQuestionCircle, label: "FAQ" },
-  { href: "/contact", icon: MdMessage , label: "Message" },
-  { href: "/jobcategories", icon: TbCategoryFilled , label: "Job Category" },
+  { href: "/client/about", icon: FaInfoCircle, label: "About" },
+  { href: "/client/careers", icon: FaBriefcase, label: "Careers" },
+  { href: "/client/service", icon: FaServicestack, label: "Services" },
+  { href: "/client/faq", icon: FaQuestionCircle, label: "FAQ" },
+  { href: "/client/contact", icon: MdMessage , label: "Message" },
+  { href: "/client/jobcategories", icon: TbCategoryFilled , label: "Job Category" },
 ];
 
 export const Sidebar: FC<SidebarProps> = ({ toggleSidebar }) => {
@@ -58,7 +58,7 @@ export const Sidebar: FC<SidebarProps> = ({ toggleSidebar }) => {
         {isOpen && (
           <div className="ml-4 flex flex-col">
             <span className="text-start text-xs font-bold">Totally</span>
-            <span className="text-start text-xs font-bold">Optimized Solutions</span>
+            <span className="text-start text-xs font-bold">Optimised Solutions</span>
           </div>
         )}
       </button>
