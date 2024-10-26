@@ -40,7 +40,7 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
       experience: '',
       salary: '',
       jobLocation: '',
-      jobCategory: '', // Add jobCategory to default values
+      jobCategory: '', 
     },
   });
 

@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-'use client';
+"use client";
 import { useState } from "react";
 import { Sidebar } from "@/src/components/sidebar/sidebar";
 import { Header } from "@/src/components/header/header";
@@ -18,15 +18,20 @@ export default function ClientLayout({
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
+
       <Sidebar toggleSidebar={toggleSidebar} />
 
-      <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarOpen ? 'ml-56' : 'ml-14'}`}>
-        {/* Header */}
-        <Header  />
+      <div
+        className={`flex-1 flex flex-col transition-all p-2 bg-gray-200  duration-300 ${
+          sidebarOpen ? "ml-56" : "ml-14"
+        }`}
+      >
+        <div className="bg-white rounded-md min-h-[98vh]">
+          {/* Header */}
+          <Header />
 
-        {/* Main Content */}
-        <div className="p-6 flex-1">
-          {children}
+          {/* Main Content */}
+          <div className="p-4 flex-1">{children}</div>
         </div>
       </div>
     </div>

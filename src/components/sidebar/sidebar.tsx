@@ -21,8 +21,8 @@ const navData = [
   { href: "/client/careers", icon: FaBriefcase, label: "Careers" },
   { href: "/client/service", icon: FaServicestack, label: "Services" },
   { href: "/client/faq", icon: FaQuestionCircle, label: "FAQ" },
-  { href: "/client/contact", icon: MdMessage , label: "Message" },
-  { href: "/client/jobcategories", icon: TbCategoryFilled , label: "Job Category" },
+  { href: "/client/contact", icon: MdMessage, label: "Message" },
+  { href: "/client/jobcategories", icon: TbCategoryFilled, label: "Job Category" },
 ];
 
 export const Sidebar: FC<SidebarProps> = ({ toggleSidebar }) => {
@@ -41,50 +41,55 @@ export const Sidebar: FC<SidebarProps> = ({ toggleSidebar }) => {
 
   return (
     <div
-      className={`bg-gray-100 text-gray-800 max-h-screen p-4 transition-all duration-300 ${
+      className={`fixed top-0 left-0 h-full transition-all duration-300 bg-gray-200 p-2 ${
         isOpen ? "w-56" : "w-14"
-      } fixed top-0 left-0 h-full`}
+      }`}
     >
-      {/* Toggle Button */}
-      <button
-        className={`flex flex-row items-center mb-10 ${
-          isOpen
-            ? "hover:bg-gray-500  p-2 hover:bg-opacity-30 hover:backdrop-blur-lg"
-            : ""
-        } transition-all duration-300 rounded-md w-full`}
-        onClick={handleToggleSidebar}
-      >
-        <FaBars className="text-2xl rounded-md" />
-        {isOpen && (
-          <div className="ml-4 flex flex-col">
-            <span className="text-start text-xs font-bold">Totally</span>
-            <span className="text-start text-xs font-bold">Optimised Solutions</span>
-          </div>
-        )}
-      </button>
+      {/* Background Layer */}
+      <div className={`bg-white h-full p-2 rounded-md transition-all duration-300 ${isOpen ? "rounded-l-md" : "rounded-md"}`}>
+        {/* Toggle Button */}
+        <button
+          className={`flex flex-row items-center mb-10 ${
+            isOpen
+              ? "hover:bg-gray-500 p-2 hover:bg-opacity-30 hover:backdrop-blur-lg"
+              : ""
+          } transition-all duration-300 rounded-md w-full`}
+          onClick={handleToggleSidebar}
+        >
+          <FaBars className="text-2xl rounded-sm" />
+          {isOpen && (
+            <div className="ml-4 flex flex-col">
+              <span className="text-start text-xs font-bold">Totally</span>
+              <span className="text-start text-xs font-bold">Optimised Solutions</span>
+            </div>
+          )}
+        </button>
 
-      <nav className="space-y-5">
-        {navData.map(({ href, icon: Icon, label }) => (
-          <Link
-            key={label}
-            href={href}
-            className={`flex items-center transition-all duration-300 rounded-md w-full ${
-              activeTab === label ? "text-black" : "text-gray-600"
-            } ${isOpen ? "p-2 hover:bg-gray-500 hover:bg-opacity-30 hover:backdrop-blur-lg" : ""}`}
-            onClick={() => handleLinkClick(label)}
-          >
-            <Icon
-              className={`text-xl ${activeTab === label ? "text-black" : "text-gray-600"} ${
-                isOpen ? "mr-2" : "mx-auto"
-              }`}
-            />
-            {isOpen && <span>{label}</span>}
-            <FaChevronRight
-              className={`ml-auto transition-transform ${isOpen ? "transform-none" : "hidden"}`}
-            />
-          </Link>
-        ))}
-      </nav>
+        <nav className={isOpen ? "space-y-2" : "space-y-7"}>
+          {navData.map(({ href, icon: Icon, label }) => (
+            <Link
+              key={label}
+              href={href}
+              className={`flex items-center transition-all duration-300 rounded-md w-full ${
+                activeTab === label ? "text-black" : "text-gray-600"
+              } ${isOpen ? "p-2 hover:bg-gray-500 hover:bg-opacity-30 hover:backdrop-blur-lg" : ""}`}
+              onClick={() => handleLinkClick(label)}
+            >
+              <Icon
+                className={`text-xl ${activeTab === label ? "text-black" : "text-gray-600"} ${
+                  isOpen ? "mr-4" : "mx-auto"
+                }`}
+              />
+              {isOpen && <span className="text-md">{label}</span>}
+              {activeTab === label && (
+                <FaChevronRight
+                  className={`ml-auto transition-transform ${isOpen ? "transform-none" : "hidden"} text-md`}
+                />
+              )}
+            </Link>
+          ))}
+        </nav>
+      </div>
     </div>
   );
 };
