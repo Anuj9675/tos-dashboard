@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FaPlus, FaTimes } from 'react-icons/fa'; // Import Plus and Close icons
+import { FaPlus } from 'react-icons/fa'; // Import Plus and Close icons
 import CareersForm from './careerform'; // Update path if necessary
 import { CareerItem } from '@/types'; // Import the CareerItem type
 
