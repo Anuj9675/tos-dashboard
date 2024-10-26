@@ -1,5 +1,5 @@
 'use client';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useState } from 'react';
@@ -9,18 +9,18 @@ import { CareerItem } from '@/types'; // Import the CareerItem type
 const schema = yup.object().shape({
   jobTitle: yup.string().required('Job title is required'),
   jobDescription: yup.string().required('Job description is required'),
-  responsibilities: yup.string().required('Responsibilities are required'), // Change to string
-  skillsAndQualifications: yup.string().required('Skills are required'), // Change to string
+  responsibilities: yup.string().required('Responsibilities are required'), 
+  skillsAndQualifications: yup.string().required('Skills are required'), 
   employmentType: yup.string().required('Employment type is required'),
   experience: yup.string().required('Experience is required'),
   salary: yup.string().required('Salary is required'),
   jobLocation: yup.string().required('Job location is required'),
-  jobCategory: yup.string().required('Job category is required'), // Add jobCategory to schema
+  jobCategory: yup.string().required('Job category is required'), 
 });
 
 interface CareersFormProps {
-  onSave: (data: CareerItem) => void; // Define onSave prop type
-  onClose: () => void; // Define onClose prop type
+  onSave: (data: CareerItem) => void;
+  onClose: () => void; 
 }
 
 const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
@@ -29,12 +29,12 @@ const CareersForm: React.FC<CareersFormProps> = ({ onSave, onClose }) => {
 
   // Initialize the form using react-hook-form
   const { control, handleSubmit, formState: { errors }, reset } = useForm<CareerItem>({
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(schema) as unknown as Resolver<CareerItem>,
     defaultValues: {
       jobTitle: '',
       jobDescription: '',
-      responsibilities: '', // Initialize as string
-      skillsAndQualifications: '', // Initialize as string
+      responsibilities: '', 
+      skillsAndQualifications: '', 
       employmentType: '',
       experience: '',
       salary: '',
